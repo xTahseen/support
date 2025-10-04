@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+
+  bot:
+    build:
+      context: .
+    container_name: support-bot
+    command: sh -c "cd /usr/src/app && python -m app"
+    restart: always
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - MONGO_URI=mongodb+srv://itxcriminal:qureshihashmI1@cluster0.jyqy9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      - MONGO_DB=supportbot
+
+  mongodb:
+    image: mongo:6
+    container_name: support-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo/data/:/data/db
+    networks:
+      - network
+
+networks:
+  network:
